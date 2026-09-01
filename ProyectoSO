@@ -2,62 +2,62 @@
 opcion=-1
 
 while [ "$opcion" -ne 0 ]; do
-    	echo ""
-    	echo "==================="
-    	echo "=      MENU       ="
-    	echo "==================="
-    	echo "1. Acciones en Directorios"
-    	echo "2. Acciones en Archivos"
-    	echo "3. Acciones sobre el contenido de un archivo"
-    	echo "4. Cambiar permisos de un archivo o directorio"
-    	echo "5. Mostrar fecha y hora"
-    	echo "6. Mostrar calendario"
-    	echo "7. Archivo de Log"
-    	echo "0. Salir"
-    	echo "==================="
-    	echo "Ingrese la opcion que desea seleccionar: "
+    echo ""
+    echo "==================="
+    echo "=      MENU       ="
+    echo "==================="
+    echo "1. Acciones en Directorios"
+    echo "2. Acciones en Archivos"
+    echo "3. Acciones sobre el contenido de un archivo"
+    echo "4. Cambiar permisos de un archivo o directorio"
+    echo "5. Mostrar fecha y hora"
+    echo "6. Mostrar calendario"
+    echo "7. Archivo de Log"
+	echo "0. Salir"
+	echo "==================="
+    echo "Ingrese la opcion que desea seleccionar: "
 	read opcion
 
-    	case $opcion in
-        	1)
-        		echo "--- SUBMENU: ACCIONES EN DIRECTORIOS ---"
-        		echo "a) Crear directorio"
-            		echo "b) Eliminar directorio"
+    case $opcion in
+    	1)
+        	echo "--- SUBMENU: ACCIONES EN DIRECTORIOS ---"
+        	echo "a) Crear directorio"
+            echo "b) Eliminar directorio"
 			echo "Seleccione una opcion: " 
-            		read OpcionDirect
+            read OpcionDirect
 		            
-           		if [ "$OpcionDirect" = "a" ]; then
-                		echo "Nombre del directorio a crear: " 
+           	if [ "$OpcionDirect" = "a" ]; then
+            	echo "Nombre del directorio a crear: " 
 				read dir
-                		if [ -d "$dir" ]; then
-                	    		echo "ERROR: El directorio ya existe."
-                		else
-                		    mkdir "$dir"
-                		    echo "Directorio creado con exito."
-               		fi
+            	if [ -d "$dir" ]; then
+            		echo "ERROR: El directorio ya existe."
+                	else
+                    mkdir "$dir"
+                    echo "Directorio creado con exito."
+               	fi
 
-            		elif [ "$OpcionDirect" = "b" ]; then
-                		echo "Nombre del directorio a borrar: " 
-				read dir
-               			if [ -d "$dir" ]; then
-              				rmdir "$dir" 2>/dev/null #dsp fijarse si eliminar tmb el archivo aunque tenga archivos dentro
-               				echo "Directorio eliminado."
-                		else
-               				echo "ERROR: El directorio no existe."
-                	fi
-            		else
-            			echo "Opcion no valida."
+            	elif [ "$OpcionDirect" = "b" ]; then
+                	echo "Nombre del directorio a borrar: " 
+					read dir
+               		if [ -d "$dir" ]; then
+              			rmdir "$dir" 2>/dev/null #dsp fijarse si eliminar tmb el archivo aunque tenga archivos dentro
+               			echo "Directorio eliminado."
+                	else
+               			echo "ERROR: El directorio no existe."
+                fi
+            	else
+            		echo "Opcion no valida."
 
-            		fi
-            		;;
+            	fi
+            	;;
 
-        	2)
-            		echo "--- SUBMENU: ACCIONES EN ARCHIVOS ---"
-            		echo "a) Eliminar archivo"
-	    		echo "b) Copiar archivo"
-            		echo "c) Mover archivo"	
-	    		echo "d) Mostrar permisos"
-	    		echo "e) Mostrar archivos de un directorio"    
+        2)
+    	   	echo "--- SUBMENU: ACCIONES EN ARCHIVOS ---"
+        	echo "a) Eliminar archivo"
+	    	echo "b) Copiar archivo"
+        	echo "c) Mover archivo"	
+	    	echo "d) Mostrar permisos"
+	    	echo "e) Mostrar archivos de un directorio"    
 			echo "Seleccione una opcion: " 
 			read OpcionArch
 			
@@ -65,11 +65,11 @@ while [ "$opcion" -ne 0 ]; do
 				echo "Ingrese el nombre del archivo a borrar: "
 				read archivo	
 				if [ -f "$archivo" ]; then
-    					rm $archivo
+    				rm $archivo
 					echo "El archivo fue eliminado con exito."
 				else
 					echo "ERROR: El archivo no existe."
-			fi		
+				fi		
 	 
 			elif [ "$OpcionArch" = "b"  ]; then 
 				echo "Ingrese el archivo: "
