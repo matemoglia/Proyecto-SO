@@ -109,7 +109,7 @@ while [ "$opcion" -ne 0 ]; do
             	;;
 
         	*)
-        	    echo "Opción inválida, intente de nuevo."
+        	    echo "Opcion invalida, intente de nuevo."
         	    ;;
     	esac
 
