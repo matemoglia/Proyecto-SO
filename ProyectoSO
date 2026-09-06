@@ -100,9 +100,128 @@ while [ "$opcion" -ne 0 ]; do
 	
 			;;
 			
-        	3)
-       		     echo "--- SUBMENU: AGENDA ---"
-            
+        	
+		3)
+			    echo "--- SUBMENU: AGENDA ---"
+			
+			    # Crear el archivo si no existe
+			    touch archivo.txt
+			
+			    echo "a) Guardar sus datos en un archivo"
+			    echo "b) Ver el contenido completo del archivo"
+			    echo "c) Ver línea en particular"
+			    echo "d) Buscar y mostrar información de una persona ingresando la CI y campo a mostrar"
+			    echo "e) Eliminar una línea del archivo según la CI ingresada"
+			    echo "f) Modificar el teléfono de una persona a través de su CI"
+			
+			    read -p "Ingrese la opción que desea ejecutar, en caso de no requerir ninguna inserte 0: " option
+			
+			    case $option in
+			
+			        a)
+			            read -p "Ingrese su CI: " ci
+			            read -p "Ingrese su nombre: " nombre
+			            read -p "Ingrese su apellido: " apellido
+			            read -p "Ingrese su teléfono: " telefono
+			            read -p "Ingrese su fecha de nacimiento: " fechaNacimiento
+			
+			            echo "$ci;$nombre;$apellido;$telefono;$fechaNacimiento" >> archivo.txt
+			
+			            echo "Datos guardados correctamente."
+			            ;;
+			
+			        b)
+			            echo "--- CONTENIDO DE LA AGENDA ---"
+			
+			            if [ -s archivo.txt ]; then
+			                cat archivo.txt
+			            else
+			                echo "La agenda está vacía."
+			            fi
+			            ;;
+			
+			        c)
+			            echo "Ingrese desde qué línea hasta qué línea desea ver."
+			
+			            read -p "Línea inicial: " linea1
+			            read -p "Línea final: " linea2
+			
+			            sed -n "${linea1},${linea2}p" archivo.txt
+			            ;;
+			
+			        d)
+			            read -p "Ingrese CI del usuario: " ci
+			
+			            echo "Ingrese el campo que desea ver:"
+			            echo "nombre"
+			            echo "apellido"
+			            echo "telefono"
+			            echo "fecha"
+			
+			            read -p "Campo: " campo
+			
+			            case $campo in
+			
+			                nombre)
+			                    grep "^$ci;" archivo.txt | cut -d ";" -f 2
+			                    ;;
+			
+			                apellido)
+			                    grep "^$ci;" archivo.txt | cut -d ";" -f 3
+			                    ;;
+			
+			                telefono)
+			                    grep "^$ci;" archivo.txt | cut -d ";" -f 4
+			                    ;;
+			
+			                fecha)
+			                    grep "^$ci;" archivo.txt | cut -d ";" -f 5
+			                    ;;
+			
+			                *)
+			                    echo "Campo incorrecto."
+			                    ;;
+			            esac
+			            ;;
+			
+			        e)
+			            read -p "Ingrese la CI del usuario a eliminar: " usuario
+			
+			            if grep -q "^$usuario;" archivo.txt; then
+			                grep -v "^$usuario;" archivo.txt > temporal.txt
+			                mv temporal.txt archivo.txt
+			
+			                echo "El usuario fue eliminado correctamente."
+			            else
+			                echo "No se encontró ningún usuario con esa CI."
+			            fi
+			            ;;
+			
+			        f)
+			            read -p "Ingrese la CI del usuario: " ci
+			            read -p "Ingrese el nuevo número de teléfono: " nuevoNumero
+			
+			            if grep -q "^$ci;" archivo.txt; then
+			                sed -i "s/^$ci;[^;]*/$ci;$nuevoNumero/" archivo.txt
+			
+			                echo "El teléfono fue modificado correctamente."
+			            else
+			                echo "No se encontró ningún usuario con esa CI."
+			            fi
+			            ;;
+
+        0)
+            echo "Volviendo al menú principal..."
+            ;;
+
+        *)
+            echo "Opción inválida."
+            ;;
+
+    esac
+    ;;
+```
+
             	;;
 
         	0)
