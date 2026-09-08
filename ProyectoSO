@@ -242,6 +242,54 @@ while [ "$opcion" -ne 0 ]; do
             ;;
 
         4)
+
+read -p "Ingrese de que archivo desea modificar los permisos: " archivo
+				echo "a quien desea darlo los permiso"
+				echo "USUARIO/PROPIETARIO 	ingrese u"
+				echo "GRUPO 	ingrese g"
+				echo "OTROS 	ingrese o"
+				echo "TODOS 	ingrese a"
+				read usuario
+
+				echo "Permisos para tu usuario (si o no): "
+				read -p "PERMISO DE LECTURA :" lectura
+				read -p "PERMISO DE ESCRITURA: " escritura
+				read -p "PERMISO DE EJECUCION: " ejecucion
+
+
+
+				if [ lectura]; then
+					echo "-LECTURA: SI"
+				else 
+					echo "-LECTURA: NO"	
+				fi
+					
+				if [ -w "$archivo" ]; then
+					echo "-ESCRITURA: SI"
+				else 
+					echo "-ESCRITURA: NO"
+				fi
+						
+				if [ -x "$archivo" ]; then
+					echo "-EJECUCION: SI"
+				else 
+					echo "-EJECUCION: NO"
+				fi
+				
+
+				chmod "$usuario" + "$permisos" "$archivo"
+				
+					
+				
+				
+
+
+
+
+
+
+
+
             #en construccion
             ;;
 
