@@ -211,16 +211,28 @@ while [ "$opcion" -ne 0 ]; do
 				read -p "Ingrese el mes que desea motrar (en numero)" mes
 				read -p "Ingrese el año que desea mostrar (en numero)" año
 
-				if ["$mes" -ge 1] && ["$mes" -le 12]; then
-					if[cal "$mes" "$año"| grep -qw "$dia"]; then
+				if [ "$mes" -ge 1 ] && [ "$mes" -le 12 ]; then
+					if[ cal "$mes" "$año" | grep -qw "$dia" ]; then
 						cal "$dia" "$mes" "$año"
 					else
-						echo"\e[31EL dia es incorrecto\e[0m"
+						echo -e "\e[31EL dia es incorrecto\e[0m"
 					fi
 				else
-					echo"\e[31EL MES ES INCORECTO\e[0m"
+					echo -e "\e[31EL MES ES INCORECTO\e[0m"
 				fi
 					
+				;;
+
+
+			7)
+
+				
+				
+				
+
+
+
+
 				;;
         	0)
             		echo "Saliendo del sistema..."
