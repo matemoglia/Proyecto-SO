@@ -215,9 +215,11 @@ while [ "$opcion" -ne 0 ]; do
 					if[cal "$mes" "$año"| grep -qw "$dia"]; then
 						cal "$dia" "$mes" "$año"
 					else
-						echo"EL dia es incorrecto"
+						echo"\e[31EL dia es incorrecto\e[0m"
+					fi
 				else
-					echo"el mes es incorrecto"
+					echo"\e[31EL MES ES INCORECTO\e[0m"
+				fi
 					
 				;;
         	0)
