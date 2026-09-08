@@ -194,21 +194,30 @@ while [ "$opcion" -ne 0 ]; do
 			            read -p "Ingrese el nuevo número de teléfono: " nuevoNumero
 
 							en cponstruccion
-
-        0)
-            echo "Volviendo al menú principal..."
-            ;;
-
-        *)
-            echo "Opción inválida."
-            ;;
-
-    esac
-    ;;
-```
-
             	;;
 
+			5)
+				dias= $(date +%j)
+				dia= $(date +%A)
+				mes= $(date +%B)
+				año= $(date +%Y)
+				date +%Y date +%B day+%A
+				echo"Hoy es $dia de $mes de $año "
+				echo"Han pasado $dias desde comienxo del año"
+				;;
+
+			6)			
+				read -p "Ingrese el dia que desea mostrar (en numero)" dia
+				read -p "Ingrese el mes que desea motrar (en numero)" mes
+				read -p "Ingrese el año que desea mostrar (en numero)" año
+
+				if ["$mes" -ge 1] && ["$mes" -le 12]; then
+					if[cal "$mes" "$año"| grep -qw "$dia"]; then
+					
+					
+				
+					
+				;;
         	0)
             		echo "Saliendo del sistema..."
             	;;
