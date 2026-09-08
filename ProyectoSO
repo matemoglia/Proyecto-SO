@@ -132,12 +132,8 @@ while [ "$opcion" -ne 0 ]; do
 			
 			        b)
 			            echo "--- CONTENIDO DE LA AGENDA ---"
-			
-			            if [ -s archivo.txt ]; then
-			                cat archivo.txt
-			            else
-			                echo "La agenda está vacía."
-			            fi
+			             cat archivo.txt
+		
 			            ;;
 			
 			        c)
@@ -187,28 +183,17 @@ while [ "$opcion" -ne 0 ]; do
 			        e)
 			            read -p "Ingrese la CI del usuario a eliminar: " usuario
 			
-			            if grep -q "^$usuario;" archivo.txt; then
-			                grep -v "^$usuario;" archivo.txt > temporal.txt
+			                grep -v "$usuario;" archivo.txt > temporal.txt
 			                mv temporal.txt archivo.txt
 			
 			                echo "El usuario fue eliminado correctamente."
-			            else
-			                echo "No se encontró ningún usuario con esa CI."
-			            fi
 			            ;;
 			
 			        f)
 			            read -p "Ingrese la CI del usuario: " ci
 			            read -p "Ingrese el nuevo número de teléfono: " nuevoNumero
-			
-			            if grep -q "^$ci;" archivo.txt; then
-			                sed -i "s/^$ci;[^;]*/$ci;$nuevoNumero/" archivo.txt
-			
-			                echo "El teléfono fue modificado correctamente."
-			            else
-			                echo "No se encontró ningún usuario con esa CI."
-			            fi
-			            ;;
+
+							en cponstruccion
 
         0)
             echo "Volviendo al menú principal..."
