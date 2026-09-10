@@ -1,22 +1,67 @@
-#!/bin/bash 
+#!/bin/bash
 
+Integrantes="Moglia Mateo, Melo Augustin, Salaberry Francisco"
 opcion=-1
 
+Respuesta=""
+Error=""
+
+echo "============================================="
+echo "=                                           ="
+echo "=            REGISTRO AL SISTEMA            ="
+echo "=                                           ="
+echo "============================================="
+
+read -p "Ingrese su nombre de usuario: " USUARIO 
+if [ -z "$USUARIO" ]; then 
+    USUARIO="Invitado" 
+fi
+
 while [ "$opcion" -ne 0 ]; do
+    clear
+
+    
+    echo "============================================================================================="
+    echo "Usuario: $USUARIO   |   Sistema: GESTION DE ARCHIVOS   |   Fecha y hora: $(date)" 
+    echo "============================================================================================="
+
+   
+    echo "MENU DE OPCIONES"
     echo ""
-    echo "==================="
-    echo "=      MENU       ="
-    echo "==================="
-    echo "1. Acciones en Directorios"
-    echo "2. Acciones en Archivos"
-    echo "3. Acciones sobre el contenido de un archivo"
-    echo "4. Cambiar permisos de un archivo o directorio"
-    echo "5. Mostrar fecha y hora"
-    echo "6. Mostrar calendario"
-    echo "7. Archivo de Log"
-    echo "0. Salir"
-    echo "==================="
+    echo "1) Acciones en Directorios"
+    echo "2) Acciones en Archivos"
+    echo "3) Acciones sobre el contenido de un archivo"
+    echo "4) Cambiar permisos de un archivo o directorio"
+    echo "5) Mostrar fecha y hora"
+    echo "6) Mostrar calendario"
+    echo "7) Archivo de Log"
+    echo "0) Salir"
+    echo "---------------------------------------------------------------------------------------------"
+
+    
+    if [ -n "$Respuesta" ]; then
+        echo "$Respuesta"
+    else
+        echo "(Sin operaciones recientes)"
+    fi
+    echo "---------------------------------------------------------------------------------------------"
+
+    
+    echo "MENSAJES DE ERROR:"
+    if [ -n "$Error" ]; then
+        echo -e "\e[31m$Error\e[0m"
+    else
+        echo "Ninguno"
+    fi
+    echo "================================================================================"
+
+    echo "Integrantes del grupo: $Integrantes"
+    echo "================================================================================"
+
     read -p "Ingrese la opcion que desea seleccionar: " opcion
+
+    Respuesta=""
+    Error=""
 
     case $opcion in
         1)
@@ -28,25 +73,25 @@ while [ "$opcion" -ne 0 ]; do
             if [ "$OpcionDirect" = "a" ]; then
                 read -p "Nombre del directorio a crear: " dir
                 if [ -d "$dir" ]; then
-                    echo "ERROR: El directorio ya existe."
+                    Error="ERROR: El directorio ya existe."
                 else
                     mkdir "$dir"
-                    echo "Directorio creado con exito."
+                    Respuesta="Directorio creado con exito."
                 fi
 
             elif [ "$OpcionDirect" = "b" ]; then
                 read -p "Nombre del directorio a borrar: " dir
                 if [ -d "$dir" ]; then
                     if rmdir "$dir" 2>/dev/null; then
-                        echo "Directorio eliminado."
+                        Respuesta="Directorio eliminado."
                     else
-                        echo "ERROR: El directorio no está vacío o no se puede borrar."
+                        Error="ERROR: El directorio no esta vacio o no se puede borrar."
                     fi
                 else
-                    echo "ERROR: El directorio no existe."
+                    Error="ERROR: El directorio no existe."
                 fi
             else
-                echo "Opcion no valida."
+                Error="Opcion no valida."
             fi
             ;;
 
@@ -63,9 +108,9 @@ while [ "$opcion" -ne 0 ]; do
                 read -p "Ingrese el nombre del archivo a borrar: " archivo
                 if [ -f "$archivo" ]; then
                     rm "$archivo"
-                    echo "El archivo fue eliminado con exito."
+                    Respuesta="El archivo fue eliminado con exito."
                 else
-                    echo "ERROR: El archivo no existe."
+                    Error="ERROR: El archivo no existe."
                 fi
 
             elif [ "$OpcionArch" = "b" ]; then
@@ -73,9 +118,9 @@ while [ "$opcion" -ne 0 ]; do
                 read -p "Ingrese el nombre o ruta de destino para el archivo: " destino
                 if [ -f "$origen" ]; then
                     cp "$origen" "$destino"
-                    echo "El archivo fue copiado con exito."
+                    Respuesta="El archivo fue copiado con exito."
                 else
-                    echo "ERROR: El archivo original no existe."
+                    Error="ERROR: El archivo original no existe."
                 fi
 
             elif [ "$OpcionArch" = "c" ]; then
@@ -83,63 +128,62 @@ while [ "$opcion" -ne 0 ]; do
                 read -p "Ingrese el nombre o ruta de destino para el archivo: " destino
                 if [ -f "$origen" ]; then
                     mv "$origen" "$destino"
-                    echo "El archivo fue movido con exito."
+                    Respuesta="El archivo fue movido con exito."
                 else
-                    echo "ERROR: El archivo original no existe."
+                    Error="ERROR: El archivo original no existe."
                 fi
 
             elif [ "$OpcionArch" = "d" ]; then
                 read -p "Ingrese la ruta del archivo que desea ver sus permisos: " archivo
                 if [ -f "$archivo" ]; then
-                    echo "Permisos para tu usuario: "
+                    salida_permisos="Permisos para tu usuario:\n"
                     if [ -r "$archivo" ]; then
-                        echo "-LECTURA: SI"
+                        salida_permisos="${salida_permisos}-LECTURA: SI\n"
                     else
-                        echo "-LECTURA: NO"
+                        salida_permisos="${salida_permisos}-LECTURA: NO\n"
                     fi
 
                     if [ -w "$archivo" ]; then
-                        echo "-ESCRITURA: SI"
+                        salida_permisos="${salida_permisos}-ESCRITURA: SI\n"
                     else
-                        echo "-ESCRITURA: NO"
+                        salida_permisos="${salida_permisos}-ESCRITURA: NO\n"
                     fi
 
                     if [ -x "$archivo" ]; then
-                        echo "-EJECUCION: SI"
+                        salida_permisos="${salida_permisos}-EJECUCION: SI"
                     else
-                        echo "-EJECUCION: NO"
+                        salida_permisos="${salida_permisos}-EJECUCION: NO"
                     fi
+                    Respuesta="$salida_permisos"
                 else
-                    echo "ERROR: El archivo no existe."
+                    Error="ERROR: El archivo no existe."
                 fi
 
             elif [ "$OpcionArch" = "e" ]; then
                 read -p "Ingrese la ruta del directorio: " ruta
                 if [ -d "$ruta" ]; then
-                    echo "Los archivos del directorio que usted ingreso son: "
-                    ls "$ruta"
+                    Respuesta="Los archivos del directorio que usted ingreso son:\n$(ls "$ruta")"
                 else
-                    echo "ERROR: La ruta que ingreso no es valida."
+                    Error="ERROR: La ruta que ingreso no es valida."
                 fi
             else
-                echo "Opcion no valida."
+                Error="Opcion no valida."
             fi
             ;;
 
         3)
             echo "--- SUBMENU: AGENDA ---"
 
-            # Crear el archivo si no existe
             touch archivo.txt
 
             echo "a) Guardar sus datos en un archivo"
             echo "b) Ver el contenido completo del archivo"
             echo "c) Ver linea en particular"
             echo "d) Buscar y mostrar informacion de una persona ingresando la CI y campo a mostrar"
-            echo "e) Eliminar una linea del archivo según la CI ingresada"
+            echo "e) Eliminar una linea del archivo segun la CI ingresada"
             echo "f) Modificar el telefono de una persona a traves de su CI"
 
-            read -p "Ingrese la opción que desea ejecutar, en caso de no requerir ninguna inserte 0: " option
+            read -p "Ingrese la opcion que desea ejecutar, en caso de no requerir ninguna inserte 0: " option
 
             case $option in
                 a)
@@ -150,20 +194,19 @@ while [ "$opcion" -ne 0 ]; do
                     read -p "Ingrese su fecha de nacimiento: " fechaNacimiento
 
                     echo "$ci;$nombre;$apellido;$telefono;$fechaNacimiento" >> archivo.txt
-                    echo "Datos guardados correctamente."
+                    Respuesta="Datos guardados correctamente."
                     ;;
 
                 b)
-                    echo "--- CONTENIDO DE LA AGENDA ---"
-                    cat archivo.txt
+                    Respuesta="--- CONTENIDO DE LA AGENDA ---\n$(cat archivo.txt)"
                     ;;
 
                 c)
-                    echo "Ingrese desde que línea hasta que linea desea ver."
+                    echo "Ingrese desde que linea hasta que linea desea ver."
                     read -p "Linea inicial: " linea1
                     read -p "Linea final: " linea2
 
-                    sed -n "${linea1},${linea2}p" archivo.txt
+                    Respuesta="$(sed -n "${linea1},${linea2}p" archivo.txt)"
                     ;;
 
                 d)
@@ -179,19 +222,19 @@ while [ "$opcion" -ne 0 ]; do
 
                     case $campo in
                         nombre)
-                            grep "^$ci;" archivo.txt | cut -d ";" -f 2
+                            Respuesta="$(grep "^$ci;" archivo.txt | cut -d ";" -f 2)"
                             ;;
                         apellido)
-                            grep "^$ci;" archivo.txt | cut -d ";" -f 3
+                            Respuesta="$(grep "^$ci;" archivo.txt | cut -d ";" -f 3)"
                             ;;
                         telefono)
-                            grep "^$ci;" archivo.txt | cut -d ";" -f 4
+                            Respuesta="$(grep "^$ci;" archivo.txt | cut -d ";" -f 4)"
                             ;;
                         fecha)
-                            grep "^$ci;" archivo.txt | cut -d ";" -f 5
+                            Respuesta="$(grep "^$ci;" archivo.txt | cut -d ";" -f 5)"
                             ;;
                         *)
-                            echo "Campo incorrecto."
+                            Error="Campo incorrecto."
                             ;;
                     esac
                     ;;
@@ -202,9 +245,9 @@ while [ "$opcion" -ne 0 ]; do
                     if grep -q "^$usuario;" archivo.txt; then
                         grep -v "^$usuario;" archivo.txt > temporal.txt
                         mv temporal.txt archivo.txt
-                        echo "El usuario fue eliminado correctamente."
+                        Respuesta="El usuario fue eliminado correctamente."
                     else
-                        echo "ERROR: La CI no fue encontrada."
+                        Error="ERROR: La CI no fue encontrada."
                     fi
                     ;;
 
@@ -225,72 +268,60 @@ while [ "$opcion" -ne 0 ]; do
                         echo "$linea_nueva" >> temporal.txt
                         mv temporal.txt archivo.txt
 
-                        echo "El telefono fue modificado correctamente."
+                        Respuesta="El telefono fue modificado correctamente."
                     else
-                        echo "ERROR: La CI ingresada no existe."
+                        Error="ERROR: La CI ingresada no existe."
                     fi
                     ;;
 
                 0)
-                    echo "Regresando al menu principal..."
+                    Respuesta="Regresando al menu principal..."
                     ;;
 
                 *)
-                    echo "Opción no valida."
+                    Error="Opcion no valida."
                     ;;
             esac
             ;;
 
         4)
+          	read -p "Ingrese de que archivo desea modificar los permisos: " archivo
+		echo "a quien desea darlo los permiso"
+		echo "USUARIO/PROPIETARIO 	ingrese u"
+		echo "GRUPO 	ingrese g"
+		echo "OTROS 	ingrese o"
+		echo "TODOS 	ingrese a"
+		read usuario
 
-read -p "Ingrese de que archivo desea modificar los permisos: " archivo
-				echo "a quien desea darlo los permiso"
-				echo "USUARIO/PROPIETARIO 	ingrese u"
-				echo "GRUPO 	ingrese g"
-				echo "OTROS 	ingrese o"
-				echo "TODOS 	ingrese a"
-				read usuario
-
-				echo "Permisos para tu usuario (si o no): "
-				read -p "PERMISO DE LECTURA :" lectura
-				read -p "PERMISO DE ESCRITURA: " escritura
-				read -p "PERMISO DE EJECUCION: " ejecucion
-
+		echo "Permisos para tu usuario (si o no): "
+		read -p "PERMISO DE LECTURA :" lectura
+		read -p "PERMISO DE ESCRITURA: " escritura
+		read -p "PERMISO DE EJECUCION: " ejecucion
 
 
-				if [ lectura]; then
-					echo "-LECTURA: SI"
-				else 
-					echo "-LECTURA: NO"	
-				fi
+
+		if [ lectura]; then
+			echo "-LECTURA: SI"
+		else 
+			echo "-LECTURA: NO"	
+		fi
 					
-				if [ -w "$archivo" ]; then
-					echo "-ESCRITURA: SI"
-				else 
-					echo "-ESCRITURA: NO"
-				fi
-						
-				if [ -x "$archivo" ]; then
-					echo "-EJECUCION: SI"
-				else 
-					echo "-EJECUCION: NO"
-				fi
+		if [ -w "$archivo" ]; then
+			echo "-ESCRITURA: SI"
+		else 
+			echo "-ESCRITURA: NO"
+		fi
+				
+		if [ -x "$archivo" ]; then
+			echo "-EJECUCION: SI"
+		else 
+			echo "-EJECUCION: NO"
+		fi
 				
 
-				chmod "$usuario" + "$permisos" "$archivo"
+		chmod "$usuario" + "$permisos" "$archivo"
 				
 					
-				
-				
-
-
-
-
-
-
-
-
-            #en construccion
             ;;
 
         5)
@@ -299,35 +330,38 @@ read -p "Ingrese de que archivo desea modificar los permisos: " archivo
             mes=$(date +%B)
             ano=$(date +%Y)
 
-            echo "Hoy es $dia de $mes de $ano"
-            echo "Han pasado $dias dias desde el comienzo del año"
+            Respuesta="Hoy es $dia de $mes de $ano\nHan pasado $dias dias desde el comienzo del año"
             ;;
 
         6)
             read -p "Ingrese el dia que desea mostrar (en numero): " dia
             read -p "Ingrese el mes que desea mostrar (en numero): " mes
-            read -p "Ingrese el año que desea mostrar (en numero): " año
+            read -p "Ingrese el ano que desea mostrar (en numero): " ano
 
             if [ "$mes" -ge 1 ] && [ "$mes" -le 12 ]; then
-                if cal "$mes" "$año" | grep -qw "$dia"; then
-                    cal "$mes" "$año"
+                cal_salida=$(cal "$mes" "$ano")
+                if echo "$cal_salida" | grep -qw "$dia"; then
+                    Respuesta="$cal_salida"
                 else
-                    echo -e "\e[31mEl dia es incorrecto\e[0m"
+                    Error="El dia es incorrecto"
                 fi
             else
-                echo -e "\e[31mEL MES ES INCORRECTO\e[0m"
+                Error="EL MES ES INCORRECTO"
             fi
             ;;
 
         7)
-		#en construccion				
-		;;		
+            #en construccion
+            ;;
+
         0)
+            clear
             echo "Saliendo del sistema..."
+            exit 0
             ;;
 
         *)
-            echo "Opcion invalida, intente de nuevo."
+            Error="Opcion invalida, intente de nuevo."
             ;;
     esac
 done
