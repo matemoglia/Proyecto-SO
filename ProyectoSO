@@ -12,20 +12,18 @@ echo "=            REGISTRO AL SISTEMA            ="
 echo "=                                           ="
 echo "============================================="
 
-read -p "Ingrese su nombre de usuario: " USUARIO 
-if [ -z "$USUARIO" ]; then 
-    USUARIO="Invitado" 
+read -p "Ingrese su nombre de usuario: " USUARIO
+if [ -z "$USUARIO" ]; then
+    USUARIO="Invitado"
 fi
 
 while [ "$opcion" -ne 0 ]; do
     clear
 
-    
     echo "============================================================================================="
-    echo "Usuario: $USUARIO   |   Sistema: GESTION DE ARCHIVOS   |   Fecha y hora: $(date)" 
+    echo "Usuario: $USUARIO   |   Sistema: GESTION DE ARCHIVOS   |   Fecha y hora: $(date)"
     echo "============================================================================================="
 
-   
     echo "MENU DE OPCIONES"
     echo ""
     echo "1) Acciones en Directorios"
@@ -38,15 +36,13 @@ while [ "$opcion" -ne 0 ]; do
     echo "0) Salir"
     echo "---------------------------------------------------------------------------------------------"
 
-    
     if [ -n "$Respuesta" ]; then
-        echo "$Respuesta"
+        echo -e "$Respuesta"
     else
         echo "(Sin operaciones recientes)"
     fi
     echo "---------------------------------------------------------------------------------------------"
 
-    
     echo "MENSAJES DE ERROR:"
     if [ -n "$Error" ]; then
         echo -e "\e[31m$Error\e[0m"
@@ -135,7 +131,7 @@ while [ "$opcion" -ne 0 ]; do
 
             elif [ "$OpcionArch" = "d" ]; then
                 read -p "Ingrese la ruta del archivo que desea ver sus permisos: " archivo
-                if [ -f "$archivo" ]; then
+                if [ -e "$archivo" ]; then
                     salida_permisos="Permisos para tu usuario:\n"
                     if [ -r "$archivo" ]; then
                         salida_permisos="${salida_permisos}-LECTURA: SI\n"
@@ -285,24 +281,29 @@ while [ "$opcion" -ne 0 ]; do
             ;;
 
         4)
-          	read -p "Ingrese de que archivo desea modificar los permisos: " archivo
-		echo "a quien desea dar los permiso"
-		echo "USUARIO/PROPIETARIO 	ingrese u"
-		echo "GRUPO 	ingrese g"
-		echo "OTROS 	ingrese o"
-		echo "TODOS 	ingrese a"
-		read usuario
+            read -p "Ingrese de que archivo desea modificar los permisos: " archivo
+            if [ -e "$archivo" ]; then
+                echo "A quien desea dar los permisos:"
+                echo "USUARIO/PROPIETARIO   ingrese u"
+                echo "GRUPO                 ingrese g"
+                echo "OTROS                 ingrese o"
+                echo "TODOS                 ingrese a"
+                read -p "Seleccione entidad (u/g/o/a): " usuario_perm
 
-		echo "Permisos para tu usuario (si o no): "
-		echo  "PERMISO DE LECTURA : r " 
-		echo  "PERMISO DE ESCRITURA : w " 
-		echo  "PERMISO DE EJECUCION : x " 
-		read -p "INGRESE LOS PERMISOS: " permisos
+                echo "Permisos disponibles:"
+                echo "PERMISO DE LECTURA    : r"
+                echo "PERMISO DE ESCRITURA  : w"
+                echo "PERMISO DE EJECUCION  : x"
+                read -p "INGRESE LOS PERMISOS (ej: rwx o rw): " permisos
 
-
-		chmod "$usuario"+"$permisos" "$archivo"
-				
-					
+                if chmod "${usuario_perm}+${permisos}" "$archivo" 2>/dev/null; then
+                    Respuesta="Permisos modificados correctamente."
+                else
+                    Error="ERROR: Parametros de permisos no validos."
+                fi
+            else
+                Error="ERROR: El archivo o directorio no existe."
+            fi
             ;;
 
         5)
@@ -311,7 +312,7 @@ while [ "$opcion" -ne 0 ]; do
             mes=$(date +%B)
             ano=$(date +%Y)
 
-            Respuesta="Hoy es $dia de $mes de $ano\nHan pasado $dias dias desde el comienzo del año"
+            Respuesta="Hoy es $dia de $mes de $ano\nHan pasado $dias dias desde el comienzo del ano"
             ;;
 
         6)
@@ -319,8 +320,8 @@ while [ "$opcion" -ne 0 ]; do
             read -p "Ingrese el mes que desea mostrar (en numero): " mes
             read -p "Ingrese el ano que desea mostrar (en numero): " ano
 
-            if [ "$mes" -ge 1 ] && [ "$mes" -le 12 ]; then
-                cal_salida=$(cal "$mes" "$ano")
+            if [ "$mes" -ge 1 ] 2>/dev/null && [ "$mes" -le 12 ] 2>/dev/null; then
+                cal_salida=$(cal "$mes" "$ano" 2>/dev/null)
                 if echo "$cal_salida" | grep -qw "$dia"; then
                     Respuesta="$cal_salida"
                 else
@@ -332,7 +333,7 @@ while [ "$opcion" -ne 0 ]; do
             ;;
 
         7)
-            #en construccion
+            Respuesta="Opcion en construccion."
             ;;
 
         0)
