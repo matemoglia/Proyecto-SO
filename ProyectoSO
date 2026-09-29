@@ -78,7 +78,7 @@ while [ "$opcion" -ne 0 ]; do
             elif [ "$OpcionDirect" = "b" ]; then
                 read -p "Nombre del directorio a borrar: " dir
                 if [ -d "$dir" ]; then
-                    if rmdir "$dir" 2>/dev/null; then
+                    if rmdir "$dir" || rm -rf "$dir" 2>/dev/null; then
                         Respuesta="Directorio eliminado."
                     else
                         Error="ERROR: El directorio no esta vacio o no se puede borrar."
@@ -144,7 +144,7 @@ while [ "$opcion" -ne 0 ]; do
                     else
                         salida_permisos="${salida_permisos}-ESCRITURA: NO\n"
                     fi
-
+                    
                     if [ -x "$archivo" ]; then
                         salida_permisos="${salida_permisos}-EJECUCION: SI"
                     else
@@ -235,8 +235,8 @@ while [ "$opcion" -ne 0 ]; do
                     esac
                     ;;
 
-                e)
-                    read -p "Ingrese la CI del usuario a eliminar: " usuario
+                    e)
+                        read -p "Ingrese la CI del usuario a eliminar: " usuario
 
                     if grep -q "^$usuario;" archivo.txt; then
                         grep -v "^$usuario;" archivo.txt > temporal.txt
@@ -323,7 +323,7 @@ while [ "$opcion" -ne 0 ]; do
             if [ $mes -ge 1 ] && [ $mes -le 12 ]; then
                 calSalida=$(cal $mes $ano)
                 if echo "$calSalida" | grep -qw "$dia"; then
-                    Respuesta="$calSalida\nEl dia $dia del mes $mes del ano $ano es correcto."
+                    Respuesta="$calSalida\n El dia $dia del mes $mes del ano $ano es correcto."
                 else
                     Error="El dia es incorrecto"
                 fi
