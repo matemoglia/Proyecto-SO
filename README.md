@@ -1,4 +1,6 @@
-# Proyecto-SO
+<h1>Proyecto-SO</h1>
+
+<h3>Definicion de comandos aprendidos</h3>
 echo -e "\e[31mRojo\e[0m"
 echo -e "\e[32mVerde\e[0m"
 echo -e "\e[33mAmarillo\e[0m"
