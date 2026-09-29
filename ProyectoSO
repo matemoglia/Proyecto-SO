@@ -207,8 +207,8 @@ while [ "$opcion" -ne 0 ]; do
 
                 d)
                     read -p "Ingrese CI del usuario: " ci
-
                     echo "Ingrese el campo que desea ver:"
+
                     echo "nombre"
                     echo "apellido"
                     echo "telefono"
@@ -312,7 +312,7 @@ while [ "$opcion" -ne 0 ]; do
             mes=$(date +%B)
             ano=$(date +%Y)
 
-            Respuesta="Hoy es $dia de $mes de $ano\nHan pasado $dias dias desde el comienzo del ano"
+            Respuesta="Hoy es $ano / $mes / $dia \nHan pasado $dias dias desde el comienzo del ano"
             ;;
 
         6)
@@ -320,10 +320,10 @@ while [ "$opcion" -ne 0 ]; do
             read -p "Ingrese el mes que desea mostrar (en numero): " mes
             read -p "Ingrese el ano que desea mostrar (en numero): " ano
 
-            if [ "$mes" -ge 1 ] 2>/dev/null && [ "$mes" -le 12 ] 2>/dev/null; then
-                cal_salida=$(cal "$mes" "$ano" 2>/dev/null)
-                if echo "$cal_salida" | grep -qw "$dia"; then
-                    Respuesta="$cal_salida"
+            if [ $mes -ge 1 ] && [ $mes -le 12 ]; then
+                calSalida=$(cal $mes $ano)
+                if echo "$calSalida" | grep -qw "$dia"; then
+                    Respuesta="$calSalida\nEl dia $dia del mes $mes del ano $ano es correcto."
                 else
                     Error="El dia es incorrecto"
                 fi
@@ -333,7 +333,47 @@ while [ "$opcion" -ne 0 ]; do
             ;;
 
         7)
-            Respuesta="Opcion en construccion."
+
+			echo "--- SUBMENU: ARCHIVO DE LOG ---" 
+			echo "a) Ver historial completo del log"
+            echo "b) Mostrar registros entre fechas"
+            echo "c) Mostrar registros por tipo de accion"
+            echo "d) Mostrar acciones realizadas por un usuario"
+            echo "e) Eliminar el log"
+            read -p "Seleccione una opcion: " OpcionLog
+
+			case $OpcionLog in 
+				a) 
+					if [ -s "sistema.log "]; then
+						Respuesta="--- HISTORIAL DE LOG --- \n$(cat archivo.log)"
+					else 
+						Respuesta="El archivo de log esta vacio"
+					fi
+					;;
+				
+				b) 
+					read -p "Ingrese fecha de inicio (DD-MM-YYYY): " fInicio
+					read -p "Ingrese fecha de fin (DD-MM-YYYY): " fFin
+
+                    Respuesta="--- REGISTROS ENTRE FECHAS ---\n $(sed -n "/$fInicio/,/$fFin/p" archivo.log)"
+                    ;;
+
+                c)
+                    read -p "Ingrese el tipo de accion (Crear, Eliminar, Modificar, Copiar, Mover): " tipoAccion
+                    Respuesta="--- REGISTROS POR TIPO DE ACCION ---\n $(grep "$tipoAccion" archivo.log)"
+                    ;;
+
+                d) 
+                    read -p "Ingrese el nombre de usuario: " nomUsuario
+                    Respuesta="--- ACCIONES REALIZADAS POR EL USUARIO $nomUsuario ---\n $(grep "$nomUsuario" archivo.log)"
+                    ;;
+                
+                e) 
+                    rm -f archivo.log
+                    Respuesta="El archivo de log ha sido eliminado"
+                    ;;
+
+            esac
             ;;
 
         0)
@@ -341,7 +381,7 @@ while [ "$opcion" -ne 0 ]; do
             echo "Saliendo del sistema..."
             exit 0
             ;;
-
+		
         *)
             Error="Opcion invalida, intente de nuevo."
             ;;
