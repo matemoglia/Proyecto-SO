@@ -18,4 +18,4 @@ Ej: Si buscas la CI 1234; sin el ^, grep te devolvería por error a alguien con 
 
 <h3>parametros IF </h3>
 https://atareao.es/tutorial/scripts-en-bash/condicionales-en-bash/
-
+-r --> verifica si tiene lectura, -w --> si tiene escritura, y -x --> si tiene ejecucion 
