@@ -312,7 +312,7 @@ while [ "$opcion" -ne 0 ]; do
             mes=$(date +%B)
             ano=$(date +%Y)
 
-            Respuesta="Hoy es $ano / $mes / $dia \nHan pasado $dias dias desde el comienzo del ano"
+            Respuesta="Hoy es $ano / $mes / $dia y han pasado $dias dias desde el comienzo del ano"
             ;;
 
         6)
