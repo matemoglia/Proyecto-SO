@@ -23,9 +23,19 @@ Ej: Si buscas la CI 1234; sin el ^, grep te devolvería por error a alguien con 
 
 el parámetro "-q" sirve para que no muestre nada en la terminal, en el caso que lo utilizamos en nuestro proyecto  solo comprueba si la cédula existe para que el if tome la decisión.
 
+El parametro "-qw" sirve  para comprobar si una palabra exacta existe dentro de un texto o archivo (normalmente se utiliza en condicionales) 
+
 El parametro "-v" sirve para invertir el funcionamiento del grep, o sea, muestra todas las que no coinciden con lo buscado.
 
 <h3>parametros IF </h3>
 https://atareao.es/tutorial/scripts-en-bash/condicionales-en-bash/
 <br>
--z Sirve para verificar si una cadena de texto esta vacía, -n verifica lo contrariox|
+-z Sirve para verificar si una cadena de texto esta vacía, -n verifica lo contrario
+-d  verifica si una ruta de directorio existe
+-e verifica si el archivo y el directorio existe 
+-r si Arch o Dir existe y si tiene permiso de lectura, -w de escritura y -x de ejecución
+-s sirve para comprobar si un archivo existe Y NO está vacío
+
+<h3>Otros</h3>
+rm -rf --> sirve para eliminar directorios de forma forzada, es decir, sin importar que este vacio 
+  
