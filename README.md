@@ -14,7 +14,7 @@ el "-e" en el echo sirve para habilitar la interpretación de los caracteres de 
 Las llaves ${variable} sirven para delimitar el nombre de la variable y que no se mezcle con el texto que viene pegado inmediatamente después
 
 sed -n sirve para mostrar específicamente de que linea a que linea mostrar 
-
+p: Significa print (imprimir). Le ordena a sed que imprima únicamente el rango especificado.
 <H3>Comandos grep</H3>
 https://www.arsys.es/blog/el-comando-grep-en-linux
 
