@@ -15,6 +15,7 @@ Las llaves ${variable} sirven para delimitar el nombre de la variable y que no s
 
 sed -n sirve para mostrar específicamente de que linea a que linea mostrar 
 p: Significa print (imprimir). Le ordena a sed que imprima únicamente el rango especificado.
+,: Define un rango que va desde la línea indicada en ${linea1} hasta la indicadada en ${linea2}.
 <H3>Comandos grep</H3>
 https://www.arsys.es/blog/el-comando-grep-en-linux
 
